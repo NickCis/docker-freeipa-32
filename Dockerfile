@@ -1,5 +1,5 @@
 # Clone from the Fedora 23 image
-FROM fedora:23
+FROM nickcis/fedora-32:23
 
 MAINTAINER Jan Pazdziora
 
