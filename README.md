@@ -1,5 +1,13 @@
 # FreeIPA server in Docker
 
+This image is for building the FreeIPA server in a 32 bits Docker (using `nickcis/fedora-32:23` as base image).
+
+For more information about how to run docker in a 32bits machine:
+* [nickcis/packages-archlinux](https://github.com/NickCis/packages-archlinux)
+* [nickcis/docker-build-scripts](https://github.com/NickCis/docker-build-scripts)
+
+This was tested under an Arch Linux 32bits machine.
+
 This repository contains the Dockerfile and associated assets for
 building a FreeIPA server Docker image from the official yum repo.
 
@@ -13,7 +21,7 @@ Start the service:
 
 To build the image, run in the root of the repository:
 
-    docker build -t freeipa-server .
+    docker build -t freeipa-server-32 .
 
 Create directory which will hold the server data:
 
