@@ -11,14 +11,6 @@ This was tested under an Arch Linux 32bits machine.
 This repository contains the Dockerfile and associated assets for
 building a FreeIPA server Docker image from the official yum repo.
 
-Install docker 1.8+:
-
-    yum install -y docker
-
-Start the service:
-
-    systemctl start docker
-
 To build the image, run in the root of the repository:
 
     docker build -t freeipa-server-32 .
@@ -51,18 +43,18 @@ least
 
 You then run the container with
 
-    docker run --name freeipa-server-container -ti \
+    docker run --name freeipa-server-32-container -ti \
        -h ipa.example.test \
        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-       -v /var/lib/ipa-data:/data:Z freeipa-server
+       -v /var/lib/ipa-data:/data:Z freeipa-server-32
 
 If you do not specify the passwords in the ipa-server-install-options
 file, use `PASSWORD` environment variable via the `-e` option:
 
-    docker run --name freeipa-server-container -ti \
+    docker run --name freeipa-server-32-container -ti \
        -h ipa.example.test -e PASSWORD=Secret123 \
        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
-       -v /var/lib/ipa-data:/data:Z freeipa-server
+       -v /var/lib/ipa-data:/data:Z freeipa-server-32
 
 If the above fails with error about invalid value for flag -v
 and bad format for volumes, run
@@ -85,8 +77,8 @@ The `-ti` parameters are optional and are used for get a terminal
 
 The container can the be started and stopped:
 
-    docker stop freeipa-server-container
-    docker start -ai freeipa-server-container
+    docker stop freeipa-server-32-container
+    docker start -ai freeipa-server-32-container
 
 If you want to use the FreeIPA server not just from the host
 where it is running but from external machines as well, you
@@ -108,14 +100,14 @@ There are multiple `*-client` branches named after OS they are
 based on. Check out the branch you prefer and in the root of the
 repository, run:
 
-    docker build -t freeipa-client .
+    docker build -t freeipa-client-32 .
 
 To run the client container, run it with correctly set DNS
 and hostname in the IPA domain, or you can link it to the
 freeipa-server container directly:
 
-    docker run --privileged --link freeipa-server-container:ipa \
-        -e PASSWORD=Secret123 -ti freeipa-client
+    docker run --privileged --link freeipa-server-32-container:ipa \
+        -e PASSWORD=Secret123 -ti freeipa-client-32
 
 The first time this container runs, it invokes `ipa-client-install`
 with the given admin password.
