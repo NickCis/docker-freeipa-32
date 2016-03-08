@@ -7,7 +7,7 @@ on a host.
 
 To build the image, run in the root of the repository:
 
-    docker build -t freeipa-client .
+    docker build -t freeipa-client-32 .
 
 To run the container and have it automatically enroll to an IPA
 server, either link it to the freeipa-server container with alias
@@ -18,7 +18,7 @@ the existing host configuration.
 If your host's resolv.conf will allow the client to find the IPA
 server for its domain, merely running
 
-    docker run -h web.example.com -e PASSWORD=Secret123 -ti freeipa-client
+    docker run -h web.example.com -e PASSWORD=Secret123 -ti freeipa-client-32
 
 will be enough. You can use `--dns` to point it to the correct
 DNS server (possibly IPA server running DNS service).
@@ -26,7 +26,7 @@ DNS server (possibly IPA server running DNS service).
 Alternatively, use `--link` with alias `ipa` to point the client
 container to IPA server container:
 
-    docker run -h web.example.com --link freeipa-server-container:ipa -e PASSWORD=Secret123 -ti freeipa-client
+    docker run -h web.example.com --link freeipa-server-32-container:ipa -e PASSWORD=Secret123 -ti freeipa-client-32
 
 The referenced server container must be running.
 
@@ -35,7 +35,7 @@ default docker run does not set FQDN, either specify it with
 the `-h` options or run the container as privileged when it will
 be allowed to change its own hostname, using IPA server's domain:
 
-    docker run --privileged --link freeipa-server-container:ipa -e PASSWORD=Secret123 -ti freeipa-client
+    docker run --privileged --link freeipa-server-32-container:ipa -e PASSWORD=Secret123 -ti freeipa-client-32
 
 The first time this container runs, it invokes `ipa-client-install`
 with the given admin password and configures itself against
@@ -54,8 +54,7 @@ The container can then be stopped and started:
 
 # FreeIPA server in Docker
 
-Checkout the `fedora-21`, `fedora-20`, `fedora-rawhide`, `rhel-7`,
-`centos-7`, `rhel-7-upstream`, or `centos-7-upstream` branch
+Checkout the `fedora-23` branch
 to get repository with the Dockerfile and associated assets for
 building a FreeIPA/IdM server Docker image from the official yum
 repo.
