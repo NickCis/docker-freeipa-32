@@ -49,6 +49,8 @@ RUN for i in /usr/lib/systemd/system/*-domainname.service ; do sed -i 's#^ExecSt
 
 RUN if [ -f /etc/fstab ] ; then sed -i 's/^UUID=/# UUID=/' /etc/fstab; fi
 
+RUN useradd dbus && mkdir /var/run/dbus && dbus-daemon --fork --system
+
 ENV container docker
 
 EXPOSE 53/udp 53 80 443 389 636 88 464 88/udp 464/udp 123/udp 7389 9443 9444 9445
