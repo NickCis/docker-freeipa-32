@@ -43,7 +43,7 @@ least
 
 You then run the container with
 
-    docker run --name freeipa-server-32-container -ti \
+    docker run --name freeipa-server-container -ti \
        -h ipa.example.test \
        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
        -v /var/lib/ipa-data:/data:Z freeipa-server-32
@@ -51,7 +51,7 @@ You then run the container with
 If you do not specify the passwords in the ipa-server-install-options
 file, use `PASSWORD` environment variable via the `-e` option:
 
-    docker run --name freeipa-server-32-container -ti \
+    docker run --name freeipa-server-container -ti \
        -h ipa.example.test -e PASSWORD=Secret123 \
        -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
        -v /var/lib/ipa-data:/data:Z freeipa-server-32
@@ -77,8 +77,8 @@ The `-ti` parameters are optional and are used for get a terminal
 
 The container can the be started and stopped:
 
-    docker stop freeipa-server-32-container
-    docker start -ai freeipa-server-32-container
+    docker stop freeipa-server-container
+    docker start -ai freeipa-server-container
 
 If you want to use the FreeIPA server not just from the host
 where it is running but from external machines as well, you
@@ -93,6 +93,12 @@ address. Starting the server would then be
 	-p 88:88/udp -p 464:464/udp -p 123:123/udp -p 7389:7389 \
 	-p 9443:9443 -p 9444:9444 -p 9445:9445 ...
 
+# Troubleshoot
+
+FreeIPA server might failed to start (showing a DNS error) while having a local nameserver in `/etc/resolv.conf`. Particularly, i had problems when the nameserver configured was the router (when i had as `nameserver 192.168.1.1` as first nameserver in `/etc/resolv.conf`). This problem is fixed setting an external DNS nameserver, eg. google's one:
+
+    $ cat /etc/resolv.conf
+    nameserver 8.8.8.8
 
 # IPA-enrolled client in Docker
 
@@ -106,7 +112,7 @@ To run the client container, run it with correctly set DNS
 and hostname in the IPA domain, or you can link it to the
 freeipa-server container directly:
 
-    docker run --privileged --link freeipa-server-32-container:ipa \
+    docker run --privileged --link freeipa-server-container:ipa \
         -e PASSWORD=Secret123 -ti freeipa-client-32
 
 The first time this container runs, it invokes `ipa-client-install`
